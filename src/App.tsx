@@ -1,4 +1,8 @@
 import { useState, useEffect } from "react";
+import { Vibrant } from "node-vibrant/browser";
+import debounce from "lodash/debounce";
+import useEmblaCarousel from "embla-carousel-react";
+//import { isMobile, isBrowser } from "react-device-detect";
 import "./App.css";
 import PosterView from "./components/posterView";
 import LoadingOverlay from "./components/loadingOverlay";
@@ -13,18 +17,37 @@ function App() {
   const [inputHasLength, setInputHasLength] = useState<boolean>(false);
   const [albumsDisplay, setAlbumsDisplay] = useState<SpotifyData[]>([]);
   const [isTouch, setIsTouch] = useState<boolean>(false);
+
+  // User Flow 3 States
+  const calculatedScaleX = (window.innerWidth * 0.9) / 679; // Calculate scale based on window width and original poster width
+  const calculatedScaleY = (window.innerHeight * 0.8) / 960; // Calculate scale based on window height and original poster height
+  const [scale, setScale] = useState<number>(Math.min(calculatedScaleX, calculatedScaleY));
   const [selectedIndex, setSelectedIndex] = useState<number | undefined>();
   const [selectedAlbum, setSelectedAlbum] = useState<SpotifyData | null>(null);
   const [albumTracks, setAlbumTracks] = useState<SpotifyTrack[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [albumColors, setAlbumColors] = useState<string[]>([]);
 
-  // Detect if device is touch-capable
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [emblaRef] = useEmblaCarousel();
+
   useEffect(() => {
+    // Detect if device is touch-capable
     const touch =
       window.matchMedia("(pointer: coarse)").matches ||
       "ontouchstart" in window ||
       navigator.maxTouchPoints > 0;
     setIsTouch(touch);
+
+    // Handle Scale on Window Resize with debounce to optimize performance
+    const handleResize = debounce(() => {
+      const newCalculatedScaleX = (window.innerWidth * 0.9) / 679;
+      const newCalculatedScaleY = (window.innerHeight * 0.8) / 960;
+      setScale(Math.min(newCalculatedScaleX, newCalculatedScaleY));
+    }, 200);
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
@@ -36,6 +59,23 @@ function App() {
   useEffect(() => {
     setInputHasLength(searchName.trim().length > 0);
   }, [searchName]);
+
+  useEffect(() => {
+    if (selectedAlbum) {
+      // Get prominent colors from the album cover using Vibrant package
+      Vibrant.from(selectedAlbum.image)
+        .getPalette()
+        .then((palette) => {
+          const prominentColors = [
+            palette.Vibrant?.hex,
+            palette.Muted?.hex,
+            palette.DarkVibrant?.hex,
+          ].filter(Boolean) as string[];
+
+          setAlbumColors(prominentColors);
+        });
+    }
+  }, [selectedAlbum]);
 
   const handleInputChange = (e: string) => {
     let input = e;
@@ -118,6 +158,7 @@ function App() {
 
   return (
     <div
+      className="outer-container"
       style={{
         display: "flex",
         flexDirection: "column",
@@ -138,11 +179,10 @@ function App() {
         <option value={"Spanish"}>Spanish</option>
       </select>
       */}
-
-      <span className="title">Album Cover Poster Generator</span>
       {(userFlow === 1 || userFlow === 2) && (
         <>
-          <span className="subtitle">Create Your Perfect Album Cover Poster in Seconds</span>
+          <span className="site-title">Album Cover Poster Generator</span>
+          <span className="site-subtitle">Create Your Perfect Album Cover Poster in Seconds</span>
           <div
             style={{
               marginTop: "5vh",
@@ -195,10 +235,38 @@ function App() {
           ))}
         </div>
       ) : (
-        userFlow === 3 && selectedAlbum && (
+        userFlow === 3 &&
+        selectedAlbum && (
           <>
-            <PosterView album={selectedAlbum} tracks={albumTracks} />
-            <div>
+            <div className="flex-center" style={{ height: "10%" }}>
+              <span className="site-title site-title-small">Album Cover Poster Generator</span>
+            </div>
+            <div className="embla">
+              <div className="embla__viewport" ref={emblaRef}>
+                <div className="embla__container">
+                  <div className="embla__slide">
+                    <PosterView
+                      album={selectedAlbum}
+                      tracks={albumTracks}
+                      scale={scale}
+                      albumColors={albumColors}
+                      selectedDesignIndex={0}
+                    />
+                  </div>
+                  <div className="embla__slide">Tw</div>
+                </div>
+              </div>
+            </div>
+            <div
+              style={{
+                textAlign: "center",
+                height: "10%",
+                display: "flex",
+                justifyContent: "space-evenly",
+                alignItems: "center",
+              }}
+            >
+              {/*
               <label>Size {language === "English (US)" ? "(Inches)" : "(A Size)"}</label>
               {language === "English (US)" ? (
                 <select>
@@ -214,6 +282,34 @@ function App() {
                   <option>A2</option>
                 </select>
               )}
+              */}
+              <button
+                className="standard-button back-button-color"
+                onClick={() => {
+                  setSelectedAlbum(null);
+                  setSelectedIndex(undefined);
+                  setUserFlow(2);
+                  setAlbumTracks([]);
+                }}
+              >
+                BACK
+              </button>
+              <div className="design-selection-container">
+                <button className="arrow-button left-arrow-button">&lt;</button>
+                <span className="design-selection-number">DESIGN 1</span>
+                <button className="arrow-button right-arrow-button">&gt;</button>
+              </div>
+              <button
+                className="standard-button download-button-color"
+                onClick={() => {
+                  setSelectedAlbum(null);
+                  setSelectedIndex(undefined);
+                  setUserFlow(2);
+                  setAlbumTracks([]);
+                }}
+              >
+                DOWNLOAD
+              </button>
             </div>
           </>
         )
