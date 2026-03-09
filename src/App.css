@@ -2,13 +2,84 @@
   max-width: 1280px;
   margin: 0 auto;
   height: 100vh;
-  text-align: center;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .poster-view-container {
   background-color: white;
   border: 1px solid black;
-  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  user-select: none;
+  overflow: hidden;
+}
+
+.poster-image-container {
+  height: 60%;
+  padding: 5%;
+  padding-bottom: 2%;
+}
+
+.poster-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.poster-bottom-design-container {
+  height: 40%;
+  display: flex;
+  flex-direction: column;
+}
+
+.poster-title-container {
+  height: 30%;
+  display: flex;
+  flex-direction: row;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.album-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.album-artist {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.poster-tracklist-container {
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.poster-tracklist {
+  column-gap: 20px;
+  height: fit-content;
+}
+
+.poster-tracklist-item {
+  display: block;
+  margin-bottom: 4px;
+  break-inside: avoid;
+  font-size: 12px;
 }
 
 .language-dropdown {
@@ -17,18 +88,26 @@
   right: 3vh;
 }
 
-.title {
+.site-title {
   font-size: clamp(1.5rem, 5vw + 1rem, 5rem);
   background: linear-gradient(45deg, indigo, #c0382b, indigo);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  user-select: none;
+  text-align: center;
 }
 
-.subtitle {
+.site-title-small {
+  font-size: clamp(1rem, 5vw + 0.8rem, 3rem);
+}
+
+.site-subtitle {
   font-size: clamp(0.5rem, 2vw + 0.6rem, 1.5rem);
   background: linear-gradient(90deg, red, orange, rgb(172, 14, 61), purple, blue, indigo, violet);
   -webkit-background-clip: text; /* For Chrome/Safari */
   -webkit-text-fill-color: transparent;
+  user-select: none;
+  text-align: center;
 }
 
 .search-input-container {
@@ -131,6 +210,88 @@
   }
 }
 
+.standard-button {
+  transition: width 1s ease;
+  width: 30%;
+  height: 75%;
+  border-radius: 18px;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 2;
+  transition: background-color 0.3s ease;
+}
+
+.back-button-color {
+  background-color: #c0382b;
+  color: white;
+}
+
+.back-button-color:hover {
+  background-color: red;
+}
+
+.download-button-color {
+  background-color: #2b7a0b;
+  color: white;
+}
+
+.download-button-color:hover {
+  background-color: #2a9600;
+}
+
+.design-selection-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 30%;
+  height: 75%;
+}
+
+.arrow-button {
+  transition: width 1s ease;
+  width: 20%;
+  height: 100%;
+  border: none;
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 2;
+  transition: background-color 0.3s ease;
+  background-color: #0084d1;
+  color: white;
+}
+
+.left-arrow-button {
+  border-bottom-left-radius: 18px;
+  border-top-left-radius: 18px;
+}
+
+.right-arrow-button {
+  border-bottom-right-radius: 18px;
+  border-top-right-radius: 18px;
+}
+
+.left-arrow-button:hover,
+.right-arrow-button:hover {
+  background-color: #006fa1;
+}
+
+.design-selection-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  height: 100%;
+  font-size: 1.5rem;
+  font-weight: bold;
+  background-color: #006fa1;
+  color: white;
+  cursor: default;
+  user-select: none;
+}
+
 .album-grid {
   display: grid;
   gap: 3vh 1vw;
@@ -214,4 +375,24 @@
   color: white;
   font-size: 24px;
   z-index: 1000;
+}
+
+.embla__viewport {
+  overflow: hidden;
+}
+
+.embla__container {
+  display: flex;
+  touch-action: pan-y pinch-zoom;
+}
+
+.embla__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+
+@media print {
+  .outer-container {
+    display: none !important;
+  }
 }
