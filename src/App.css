@@ -52,12 +52,12 @@
 }
 
 .album-title {
-  font-size: 24px;
+  font-size: 36px;
   font-weight: bold;
 }
 
 .album-artist {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 400;
 }
 
@@ -71,7 +71,6 @@
 }
 
 .poster-tracklist {
-  column-gap: 20px;
   height: fit-content;
 }
 
@@ -79,7 +78,6 @@
   display: block;
   margin-bottom: 4px;
   break-inside: avoid;
-  font-size: 12px;
 }
 
 .language-dropdown {
@@ -195,7 +193,33 @@
 }
 
 .submit-button:hover {
-  background-color: red;
+  background-color: #80231a;
+}
+
+.standard-button {
+  height: 56px;
+  width: 56px;
+  backdrop-filter: blur(4px);
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-button {
+  background: rgba(153, 3, 3, 0.75);
+}
+
+.back-button:hover {
+  background: rgba(153, 3, 3, 0.85);
+}
+
+.download-button {
+  background: rgba(3, 153, 3, 0.75);
+}
+
+.download-button:hover {
+  background: rgba(3, 153, 3, 0.85);
 }
 
 @keyframes glowing {
@@ -208,88 +232,6 @@
   100% {
     background-position: 0 0;
   }
-}
-
-.standard-button {
-  transition: width 1s ease;
-  width: 30%;
-  height: 75%;
-  border-radius: 18px;
-  border: none;
-  font-size: 1.5rem;
-  font-weight: bold;
-  cursor: pointer;
-  z-index: 2;
-  transition: background-color 0.3s ease;
-}
-
-.back-button-color {
-  background-color: #c0382b;
-  color: white;
-}
-
-.back-button-color:hover {
-  background-color: red;
-}
-
-.download-button-color {
-  background-color: #2b7a0b;
-  color: white;
-}
-
-.download-button-color:hover {
-  background-color: #2a9600;
-}
-
-.design-selection-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 30%;
-  height: 75%;
-}
-
-.arrow-button {
-  transition: width 1s ease;
-  width: 20%;
-  height: 100%;
-  border: none;
-  font-size: 2rem;
-  font-weight: bold;
-  cursor: pointer;
-  z-index: 2;
-  transition: background-color 0.3s ease;
-  background-color: #0084d1;
-  color: white;
-}
-
-.left-arrow-button {
-  border-bottom-left-radius: 18px;
-  border-top-left-radius: 18px;
-}
-
-.right-arrow-button {
-  border-bottom-right-radius: 18px;
-  border-top-right-radius: 18px;
-}
-
-.left-arrow-button:hover,
-.right-arrow-button:hover {
-  background-color: #006fa1;
-}
-
-.design-selection-number {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 60%;
-  height: 100%;
-  font-size: 1.5rem;
-  font-weight: bold;
-  background-color: #006fa1;
-  color: white;
-  cursor: default;
-  user-select: none;
 }
 
 .album-grid {
@@ -362,6 +304,41 @@
   transition: opacity 0.3s ease;
 }
 
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 60px;
+  height: 120px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 36px;
+  color: white;
+
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(4px);
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 1;
+}
+
+.arrow:hover {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.arrow.left {
+  left: -0.7%;
+}
+
+.arrow.right {
+  right: -0.7%;
+}
+
 .loading-overlay {
   position: fixed;
   top: 0;
@@ -375,6 +352,10 @@
   color: white;
   font-size: 24px;
   z-index: 1000;
+}
+
+.embla {
+  position: relative;
 }
 
 .embla__viewport {
