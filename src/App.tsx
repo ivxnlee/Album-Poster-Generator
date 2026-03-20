@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Vibrant } from "node-vibrant/browser";
 import debounce from "lodash/debounce";
 import useEmblaCarousel from "embla-carousel-react";
-//import { isMobile, isBrowser } from "react-device-detect";
+import { isMobile } from "react-device-detect";
+import { Download, ArrowBigLeft } from "lucide-react";
 import "./App.css";
 import PosterView from "./components/posterView";
 import LoadingOverlay from "./components/loadingOverlay";
@@ -26,9 +27,10 @@ function App() {
   const [selectedAlbum, setSelectedAlbum] = useState<SpotifyData | null>(null);
   const [albumTracks, setAlbumTracks] = useState<SpotifyTrack[]>([]);
   const [albumColors, setAlbumColors] = useState<string[]>([]);
+  const [selectedDesignIndex, setSelectedDesignIndex] = useState(0);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [emblaRef] = useEmblaCarousel();
+  const [emblaRef, emblaApi] = useEmblaCarousel();
 
   useEffect(() => {
     // Detect if device is touch-capable
@@ -76,6 +78,46 @@ function App() {
         });
     }
   }, [selectedAlbum]);
+
+  // Emabla carousel API Handling
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const onSelect = () => {
+      setSelectedDesignIndex(emblaApi.selectedScrollSnap());
+    };
+
+    // Attach listener
+    emblaApi.on("select", onSelect);
+
+    // Set initial index
+    onSelect();
+
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi]);
+
+  // Keyboard navigation for carousel
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (!emblaApi) return;
+
+      if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") {
+        emblaApi.scrollNext();
+      }
+
+      if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") {
+        emblaApi.scrollPrev();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [emblaApi]);
 
   const handleInputChange = (e: string) => {
     let input = e;
@@ -241,7 +283,13 @@ function App() {
             <div className="flex-center" style={{ height: "10%" }}>
               <span className="site-title site-title-small">Album Cover Poster Generator</span>
             </div>
+
             <div className="embla">
+              {!isMobile && (
+                <div className="arrow left" onClick={() => emblaApi?.scrollPrev()}>
+                  &#10094;
+                </div>
+              )}
               <div className="embla__viewport" ref={emblaRef}>
                 <div className="embla__container">
                   <div className="embla__slide">
@@ -253,63 +301,48 @@ function App() {
                       selectedDesignIndex={0}
                     />
                   </div>
-                  <div className="embla__slide">Tw</div>
+                  <div className="embla__slide">PLACEHOLDER</div>
                 </div>
               </div>
+              {!isMobile && (
+                <div className="arrow right" onClick={() => emblaApi?.scrollNext()}>
+                  &#10095;
+                </div>
+              )}
             </div>
             <div
               style={{
                 textAlign: "center",
                 height: "10%",
                 display: "flex",
-                justifyContent: "space-evenly",
-                alignItems: "center",
+                marginLeft: "5%",
+                marginRight: "5%",
+                justifyContent: "flex-end",
               }}
             >
-              {/*
-              <label>Size {language === "English (US)" ? "(Inches)" : "(A Size)"}</label>
-              {language === "English (US)" ? (
-                <select>
-                  <option>5.5 x 8.5</option>
-                  <option>8.5 x 11</option>
-                  <option>11 x 17</option>
-                </select>
-              ) : (
-                <select>
-                  <option>A5</option>
-                  <option>A4</option>
-                  <option>A3</option>
-                  <option>A2</option>
-                </select>
-              )}
-              */}
-              <button
-                className="standard-button back-button-color"
-                onClick={() => {
-                  setSelectedAlbum(null);
-                  setSelectedIndex(undefined);
-                  setUserFlow(2);
-                  setAlbumTracks([]);
+              <div
+                style={{
+                  width: "35%",
+                  display: "flex",
+                  justifyContent: "space-evenly",
+                  alignItems: "center",
                 }}
               >
-                BACK
-              </button>
-              <div className="design-selection-container">
-                <button className="arrow-button left-arrow-button">&lt;</button>
-                <span className="design-selection-number">DESIGN 1</span>
-                <button className="arrow-button right-arrow-button">&gt;</button>
+                <button
+                  className="standard-button back-button"
+                  onClick={() => {
+                    setSelectedAlbum(null);
+                    setSelectedIndex(undefined);
+                    setUserFlow(2);
+                    setAlbumTracks([]);
+                  }}
+                >
+                  <ArrowBigLeft size={36} color={"#ffffff"} />
+                </button>
+                <button className="standard-button download-button">
+                  <Download size={36} color={"#ffffff"} />
+                </button>
               </div>
-              <button
-                className="standard-button download-button-color"
-                onClick={() => {
-                  setSelectedAlbum(null);
-                  setSelectedIndex(undefined);
-                  setUserFlow(2);
-                  setAlbumTracks([]);
-                }}
-              >
-                DOWNLOAD
-              </button>
             </div>
           </>
         )

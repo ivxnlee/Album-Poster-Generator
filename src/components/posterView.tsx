@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useRef, useState } from "react";
 import type SpotifyData from "../interfaces";
 import type SpotifyTrack from "../interfaces";
 
@@ -9,9 +9,39 @@ const PosterView: React.FC<{
   albumColors: string[];
   selectedDesignIndex: number;
 }> = ({ album, tracks, scale, albumColors, selectedDesignIndex }) => {
+  const titleSizeRef = useRef<HTMLDivElement>(null);
+  const [titleFontSize, setTitleFontSize] = useState("36px");
+
+  useEffect(() => {
+    if (titleSizeRef.current) {
+      let size = 36;
+      const el = titleSizeRef.current;
+
+      while (el.scrollWidth > el.clientWidth && size > 12) {
+        size -= 1;
+        el.style.fontSize = `${size}px`;
+      }
+
+      setTitleFontSize(`${size}px`);
+    }
+  }, [album]);
+
   function groupBySeven(num: number) {
     if (num <= 0) return 0;
     return Math.ceil(num / 7);
+  }
+
+  const numOfRows = groupBySeven(tracks.length);
+  let trackFontSize = "16px";
+  let columnGap = "20px";
+
+  if (numOfRows === 3) {
+    trackFontSize = "14px";
+  } else if (numOfRows === 4) {
+    trackFontSize = "12px";
+  } else if (numOfRows >= 5) {
+    trackFontSize = "10px";
+    columnGap = "15px";
   }
 
   return (
@@ -22,6 +52,7 @@ const PosterView: React.FC<{
         alignContent: "center",
         justifyItems: "center",
         justifyContent: "center",
+        zIndex: 10,
       }}
     >
       <div
@@ -29,6 +60,7 @@ const PosterView: React.FC<{
           width: 681 * scale,
           height: 962 * scale,
           position: "relative",
+          boxShadow: "rgba(0, 0, 0, 0.3) 0px 10px 30px",
         }}
       >
         <div
@@ -45,9 +77,17 @@ const PosterView: React.FC<{
           </div>
           <div className="poster-bottom-design-container">
             <div className="poster-title-container">
-              <div className="flex-col" style={{ width: "70%", justifyContent: "center" }}>
-                {/* album title size needs to be more flexible depending on length */}
-                <span className="album-title">{album.name}</span>
+              <div
+                className="flex-col"
+                style={{ width: "70%", justifyContent: "center", whiteSpace: "nowrap" }}
+              >
+                <span
+                  ref={titleSizeRef}
+                  className="album-title"
+                  style={{ fontSize: titleFontSize }}
+                >
+                  {album.name}
+                </span>
                 <span className="album-artist">{album.artist}</span>
               </div>
               <div
@@ -79,7 +119,7 @@ const PosterView: React.FC<{
             <div className="poster-tracklist-container">
               <div
                 className="poster-tracklist"
-                style={{ columnCount: groupBySeven(tracks.length) }}
+                style={{ columnCount: numOfRows, fontSize: trackFontSize, columnGap: columnGap }}
               >
                 {tracks.map((track, index) => (
                   <span key={index} className="poster-tracklist-item">
