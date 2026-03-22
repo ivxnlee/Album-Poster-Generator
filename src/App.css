@@ -2,6 +2,7 @@
   max-width: 1280px;
   margin: 0 auto;
   height: 100vh;
+  overflow: hidden;
 }
 
 .flex-col {
@@ -13,6 +14,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.outer-container {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .poster-view-container {
@@ -37,13 +48,13 @@
   object-fit: contain;
 }
 
-.poster-bottom-design-container {
+.poster-bottom-container-style1 {
   height: 40%;
   display: flex;
   flex-direction: column;
 }
 
-.poster-title-container {
+.poster-title-container-style1 {
   height: 30%;
   display: flex;
   flex-direction: row;
@@ -61,7 +72,7 @@
   font-weight: 400;
 }
 
-.poster-tracklist-container {
+.poster-tracklist-container-style1 {
   height: 70%;
   display: flex;
   flex-direction: column;
@@ -106,6 +117,14 @@
   -webkit-text-fill-color: transparent;
   user-select: none;
   text-align: center;
+}
+
+.search-input-wrapper {
+  display: flex;
+  margin-top: 5vh;
+  flex-wrap: wrap;
+  flex-direction: column;
+  height: 5vh;
 }
 
 .search-input-container {
@@ -189,7 +208,7 @@
   font-weight: bold;
   cursor: pointer;
   z-index: 2;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.6s ease;
 }
 
 .submit-button:hover {

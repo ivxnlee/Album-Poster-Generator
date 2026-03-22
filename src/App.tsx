@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Vibrant } from "node-vibrant/browser";
 import debounce from "lodash/debounce";
 import useEmblaCarousel from "embla-carousel-react";
 import { isMobile } from "react-device-detect";
 import { Download, ArrowBigLeft } from "lucide-react";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import "./App.css";
 import PosterView from "./components/posterView";
 import LoadingOverlay from "./components/loadingOverlay";
@@ -11,8 +13,8 @@ import type SpotifyData from "./interfaces";
 import type SpotifyTrack from "./interfaces";
 
 function App() {
-  const [language, setLanguage] = useState<string>("English (US)");
-  const [size, setSize] = useState<string>("A4");
+  const posterRef1 = useRef<HTMLDivElement>(null);
+  const posterRefDownload = useRef<HTMLDivElement>(null);
   const [userFlow, setUserFlow] = useState<number>(1);
   const [searchName, setSearchName] = useState<string>("");
   const [inputHasLength, setInputHasLength] = useState<boolean>(false);
@@ -51,12 +53,6 @@ function App() {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  useEffect(() => {
-    if (language === "English (US)") {
-      //document.documentElement.lang = "en-US";
-    }
-  }, [language]);
 
   useEffect(() => {
     setInputHasLength(searchName.trim().length > 0);
@@ -156,6 +152,7 @@ function App() {
     }
   };
 
+  // fetch album tracks during User Flow 3 after album selection
   const getAlbumTracks = async (albumID: string) => {
     setIsLoading(true);
     const response = await fetch(
@@ -178,12 +175,14 @@ function App() {
     setIsLoading(false);
   };
 
+  // Handle enter key press in search input
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && inputHasLength) {
       handleAlbumSearch();
     }
   };
 
+  // Handle album click during User Flow 2 depending on if device is touch-capable or not
   const handleAlbumGridClick = (index: number, album: SpotifyData) => {
     if (isTouch) {
       setSelectedIndex(index);
@@ -198,42 +197,39 @@ function App() {
     setUserFlow(3);
   };
 
+  // Handle PDF Download during User Flow 3
+  const downloadPDF = async () => {
+    if (!posterRefDownload.current) return;
+
+    const canvas = await html2canvas(posterRefDownload.current, {
+      scale: 2, // increase for better quality
+      useCORS: true,
+    });
+
+    const imgData = canvas.toDataURL("image/png");
+
+    // Maintain aspect ratio
+    const imgWidth = canvas.width;
+    const imgHeight = canvas.height;
+
+    const pdf = new jsPDF({
+      orientation: imgWidth > imgHeight ? "landscape" : "portrait",
+      unit: "px",
+      format: [imgWidth, imgHeight],
+    });
+
+    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+    pdf.save("download.pdf");
+  };
+
   return (
-    <div
-      className="outer-container"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        justifyContent: "center",
-      }}
-    >
+    <div className="outer-container">
       {isLoading && <LoadingOverlay />}
-      {/*
-            <select
-        className="language-dropdown"
-        value={language}
-        onChange={(e) => setLanguage(e.target.value)}
-      >
-        <option disabled>🌐Language</option>
-        <option value={"English (US)"}>English (US)</option>
-        <option value={"English (UK)"}>English (UK)</option>
-        <option value={"Spanish"}>Spanish</option>
-      </select>
-      */}
       {(userFlow === 1 || userFlow === 2) && (
         <>
-          <span className="site-title">Album Cover Poster Generator</span>
-          <span className="site-subtitle">Create Your Perfect Album Cover Poster in Seconds</span>
-          <div
-            style={{
-              marginTop: "5vh",
-              display: "flex",
-              flexWrap: "wrap",
-              flexDirection: "column",
-              height: "5vh",
-            }}
-          >
+          <span className="site-title">Album Poster Generator</span>
+          <span className="site-subtitle">Create Your Perfect Album Poster in Seconds</span>
+          <div className="search-input-wrapper">
             <div className="search-input-container">
               <input
                 type="text"
@@ -281,7 +277,7 @@ function App() {
         selectedAlbum && (
           <>
             <div className="flex-center" style={{ height: "10%" }}>
-              <span className="site-title site-title-small">Album Cover Poster Generator</span>
+              <span className="site-title site-title-small">Album Poster Generator</span>
             </div>
 
             <div className="embla">
@@ -294,6 +290,7 @@ function App() {
                 <div className="embla__container">
                   <div className="embla__slide">
                     <PosterView
+                      ref={posterRef1}
                       album={selectedAlbum}
                       tracks={albumTracks}
                       scale={scale}
@@ -309,6 +306,18 @@ function App() {
                   &#10095;
                 </div>
               )}
+            </div>
+
+            {/* Hidden poster at full scale (1.0) for high-quality downloads */}
+            <div style={{ position: "absolute", left: "-9999px", top: "-9999px" }}>
+              <PosterView
+                ref={posterRefDownload}
+                album={selectedAlbum}
+                tracks={albumTracks}
+                scale={1}
+                albumColors={albumColors}
+                selectedDesignIndex={selectedDesignIndex}
+              />
             </div>
             <div
               style={{
@@ -339,7 +348,7 @@ function App() {
                 >
                   <ArrowBigLeft size={36} color={"#ffffff"} />
                 </button>
-                <button className="standard-button download-button">
+                <button className="standard-button download-button" onClick={downloadPDF}>
                   <Download size={36} color={"#ffffff"} />
                 </button>
               </div>
