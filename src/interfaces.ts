@@ -3,8 +3,8 @@ export default interface SpotifyData {
   name: string;
   artist: string;
   url: string;
-  code: string;
   image: string;
+  releaseDate: string;
 }
 
 export default interface SpotifyTrack {
