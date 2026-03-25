@@ -16,6 +16,14 @@
   align-items: center;
 }
 
+.poster-view-parent-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  justify-items: center;
+}
+
 .outer-container {
   overflow: hidden;
   display: flex;
@@ -28,7 +36,6 @@
 
 .poster-view-container {
   background-color: white;
-  border: 1px solid black;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -37,9 +44,10 @@
 }
 
 .poster-image-container {
-  height: 60%;
+  height: 65%;
   padding: 5%;
   padding-bottom: 2%;
+  box-sizing: border-box;
 }
 
 .poster-image-container img {
@@ -49,7 +57,8 @@
 }
 
 .poster-bottom-container-style1 {
-  height: 40%;
+  font-family: "Jost", sans-serif;
+  height: 35%;
   display: flex;
   flex-direction: column;
 }
@@ -58,8 +67,8 @@
   height: 30%;
   display: flex;
   flex-direction: row;
-  padding-left: 5%;
-  padding-right: 5%;
+  padding-left: 7%;
+  padding-right: 7%;
 }
 
 .album-title {
@@ -72,13 +81,19 @@
   font-weight: 400;
 }
 
+.album-colors-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
 .poster-tracklist-container-style1 {
   height: 70%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-left: 5%;
-  padding-right: 5%;
+  padding-left: 7%;
+  padding-right: 7%;
 }
 
 .poster-tracklist {
@@ -91,13 +106,42 @@
   break-inside: avoid;
 }
 
-.language-dropdown {
-  position: absolute;
-  top: 2vw;
-  right: 3vh;
+.poster-bottom-container-style2 {
+  height: 35%;
+  display: flex;
+  flex-direction: row;
+  font-family: "Raleway", sans-serif;
+}
+
+.poster-tracklist-container-style2 {
+  height: 100%;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  padding-left: 7%;
+  padding-right: 2%;
+  overflow: hidden;
+}
+
+.poster-title-container-style2 {
+  height: 100%;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  padding-left: 2%;
+  padding-right: 7%;
+  justify-content: space-evenly;
+}
+
+.poster-content-container-style3 {
+  height: auto;
+  max-height: 50%;
+  padding-left: 7%;
+  padding-right: 7%;
 }
 
 .site-title {
+  font-family: "Iosevka Charon", sans-serif;
   font-size: clamp(1.5rem, 5vw + 1rem, 5rem);
   background: linear-gradient(45deg, indigo, #c0382b, indigo);
   -webkit-background-clip: text;
@@ -107,10 +151,12 @@
 }
 
 .site-title-small {
+  font-family: "Iosevka Charon", sans-serif;
   font-size: clamp(1rem, 5vw + 0.8rem, 3rem);
 }
 
 .site-subtitle {
+  font-family: "Iosevka Charon", sans-serif;
   font-size: clamp(0.5rem, 2vw + 0.6rem, 1.5rem);
   background: linear-gradient(90deg, red, orange, rgb(172, 14, 61), purple, blue, indigo, violet);
   -webkit-background-clip: text; /* For Chrome/Safari */
@@ -167,6 +213,7 @@
 }
 
 .search-input {
+  font-family: "Iosevka Charon", sans-serif;
   height: 100%;
   width: 100%;
   border-top-left-radius: 15px;
@@ -254,6 +301,7 @@
 }
 
 .album-grid {
+  font-family: "Iosevka Charon", sans-serif;
   display: grid;
   gap: 3vh 1vw;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -279,6 +327,7 @@
   width: 100%;
   height: auto;
   display: block;
+  user-select: none;
 }
 
 .album-grid-name {
@@ -286,6 +335,7 @@
   background: linear-gradient(45deg, indigo, #c0382b, indigo);
   -webkit-background-clip: text; /* For Chrome/Safari */
   -webkit-text-fill-color: transparent;
+  user-select: none;
   transition:
     color 0.3s ease,
     text-shadow 0.3s ease;
@@ -356,6 +406,22 @@
 
 .arrow.right {
   right: -0.7%;
+}
+
+.bottom-navigation-outer-container {
+  text-align: center;
+  height: 10%;
+  display: flex;
+  margin-left: 7%;
+  margin-right: 7%;
+  justify-content: flex-end;
+}
+
+.bottom-navigation-buttons-container {
+  width: 35%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .loading-overlay {

@@ -14,6 +14,7 @@ import type SpotifyTrack from "./interfaces";
 
 function App() {
   const posterRef1 = useRef<HTMLDivElement>(null);
+  const posterRef2 = useRef<HTMLDivElement>(null);
   const posterRefDownload = useRef<HTMLDivElement>(null);
   const [userFlow, setUserFlow] = useState<number>(1);
   const [searchName, setSearchName] = useState<string>("");
@@ -202,9 +203,10 @@ function App() {
     if (!posterRefDownload.current) return;
 
     const canvas = await html2canvas(posterRefDownload.current, {
-      scale: 2, // increase for better quality
+      scale: 3, // increase for better quality
       useCORS: true,
     });
+    if (selectedAlbum === null) return;
 
     const imgData = canvas.toDataURL("image/png");
 
@@ -219,11 +221,13 @@ function App() {
     });
 
     pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-    pdf.save("download.pdf");
+    pdf.save(
+      `[Album Poster Generator] ${selectedAlbum.artist.replace(/[^a-zA-Z0-9]/g, "_")}_${selectedAlbum.name.replace(/[^a-zA-Z0-9]/g, "_")}.pdf`
+    );
   };
 
   return (
-    <div className="outer-container">
+    <div className="outer-container" style={userFlow === 3 ? { width: scale * 829 } : {}}>
       {isLoading && <LoadingOverlay />}
       {(userFlow === 1 || userFlow === 2) && (
         <>
@@ -243,6 +247,7 @@ function App() {
                 className={inputHasLength ? "submit-button" : "submit-button-empty"}
                 onClick={handleAlbumSearch}
                 disabled={!inputHasLength}
+                aria-label="Search Button"
               >
                 Go!
               </button>
@@ -268,7 +273,7 @@ function App() {
                 <img className="album-grid-img" src={album.image} alt={album.name} />
               </div>
               <span className="album-grid-name">{album.name}</span>
-              <span>{album.artist}</span>
+              <span style={{ userSelect: "none" }}>{album.artist}</span>
             </div>
           ))}
         </div>
@@ -282,7 +287,11 @@ function App() {
 
             <div className="embla">
               {!isMobile && (
-                <div className="arrow left" onClick={() => emblaApi?.scrollPrev()}>
+                <div
+                  className="arrow left"
+                  onClick={() => emblaApi?.scrollPrev()}
+                  aria-label="Previous Poster Design Button"
+                >
                   &#10094;
                 </div>
               )}
@@ -298,11 +307,34 @@ function App() {
                       selectedDesignIndex={0}
                     />
                   </div>
-                  <div className="embla__slide">PLACEHOLDER</div>
+                  <div className="embla__slide">
+                    <PosterView
+                      ref={posterRef2}
+                      album={selectedAlbum}
+                      tracks={albumTracks}
+                      scale={scale}
+                      albumColors={albumColors}
+                      selectedDesignIndex={1}
+                    />
+                  </div>
+                  <div className="embla__slide">
+                    <PosterView
+                      ref={posterRef2}
+                      album={selectedAlbum}
+                      tracks={albumTracks}
+                      scale={scale}
+                      albumColors={albumColors}
+                      selectedDesignIndex={2}
+                    />
+                  </div>
                 </div>
               </div>
               {!isMobile && (
-                <div className="arrow right" onClick={() => emblaApi?.scrollNext()}>
+                <div
+                  className="arrow right"
+                  onClick={() => emblaApi?.scrollNext()}
+                  aria-label="Next Poster Design Button"
+                >
                   &#10095;
                 </div>
               )}
@@ -319,24 +351,8 @@ function App() {
                 selectedDesignIndex={selectedDesignIndex}
               />
             </div>
-            <div
-              style={{
-                textAlign: "center",
-                height: "10%",
-                display: "flex",
-                marginLeft: "5%",
-                marginRight: "5%",
-                justifyContent: "flex-end",
-              }}
-            >
-              <div
-                style={{
-                  width: "35%",
-                  display: "flex",
-                  justifyContent: "space-evenly",
-                  alignItems: "center",
-                }}
-              >
+            <div className="bottom-navigation-outer-container">
+              <div className="bottom-navigation-buttons-container">
                 <button
                   className="standard-button back-button"
                   onClick={() => {
@@ -345,10 +361,15 @@ function App() {
                     setUserFlow(2);
                     setAlbumTracks([]);
                   }}
+                  aria-label="Back Button"
                 >
                   <ArrowBigLeft size={36} color={"#ffffff"} />
                 </button>
-                <button className="standard-button download-button" onClick={downloadPDF}>
+                <button
+                  className="standard-button download-button"
+                  onClick={downloadPDF}
+                  aria-label="Download Button"
+                >
                   <Download size={36} color={"#ffffff"} />
                 </button>
               </div>
