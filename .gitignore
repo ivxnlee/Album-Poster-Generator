@@ -26,3 +26,6 @@ SSL
 *.njsproj
 *.sln
 *.sw?
+
+.vercel
+.env*.local
