@@ -227,10 +227,7 @@ function App() {
   };
 
   return (
-    <div
-      className="outer-container"
-      style={userFlow === 3 ? { width: Math.min(window.innerWidth, scale * 829), padding: 0 } : {}}
-    >
+    <div className="outer-container" style={userFlow === 3 ? { width: scale * 829 } : {}}>
       {isLoading && <LoadingOverlay />}
       {(userFlow === 1 || userFlow === 2) && (
         <>
