@@ -133,7 +133,7 @@ function App() {
   // Handle Album Search during User Flow 1
   const handleAlbumSearch = async () => {
     setIsLoading(true);
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/handleSpotifySearchRequest`, {
+    const response = await fetch(`/api/handleSpotifySearchRequest`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ query: searchName }),
@@ -156,14 +156,11 @@ function App() {
   // fetch album tracks during User Flow 3 after album selection
   const getAlbumTracks = async (albumID: string) => {
     setIsLoading(true);
-    const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/handleSpotifyGetTracksRequest`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ albumID: albumID }),
-      }
-    );
+    const response = await fetch(`/api/handleSpotifyGetTracksRequest`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ albumID: albumID }),
+    });
 
     if (!response.ok) {
       console.error(response);
