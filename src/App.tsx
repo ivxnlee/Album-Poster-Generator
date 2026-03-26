@@ -145,7 +145,7 @@ function App() {
     }
 
     const data = await response.json();
-    console.log("🚀 ~ handleAlbumSearch ~ data:", data);
+
     if (data.length > 0) {
       setAlbumsDisplay(data);
       setUserFlow(2);
@@ -171,7 +171,7 @@ function App() {
     }
 
     const data = await response.json();
-    console.log("🚀 ~ getAlbumTracks ~ data:", data);
+
     setAlbumTracks(data);
     setIsLoading(false);
   };
