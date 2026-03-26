@@ -16,6 +16,7 @@ function App() {
   const posterRef1 = useRef<HTMLDivElement>(null);
   const posterRef2 = useRef<HTMLDivElement>(null);
   const posterRefDownload = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const [userFlow, setUserFlow] = useState<number>(1);
   const [searchName, setSearchName] = useState<string>("");
   const [inputHasLength, setInputHasLength] = useState<boolean>(false);
@@ -132,6 +133,7 @@ function App() {
 
   // Handle Album Search during User Flow 1
   const handleAlbumSearch = async () => {
+    searchInputRef.current?.blur();
     setIsLoading(true);
     const response = await fetch(`/api/handleSpotifySearchRequest`, {
       method: "POST",
@@ -226,7 +228,11 @@ function App() {
   return (
     <div
       className="outer-container"
-      style={userFlow === 3 ? { width: Math.min(window.innerWidth, scale * 829), padding: 0 } : {}}
+      style={
+        userFlow === 3
+          ? { width: Math.min(window.innerWidth, scale * 829), paddingLeft: 0, paddingRight: 0 }
+          : {}
+      }
     >
       {isLoading && <LoadingOverlay />}
       {(userFlow === 1 || userFlow === 2) && (
@@ -236,6 +242,7 @@ function App() {
           <div className="search-input-wrapper">
             <div className="search-input-container">
               <input
+                ref={searchInputRef}
                 type="text"
                 className={`search-input ${!inputHasLength && "empty"}`}
                 placeholder="Search For Album OR Artist"
@@ -281,7 +288,7 @@ function App() {
         userFlow === 3 &&
         selectedAlbum && (
           <>
-            <div className="flex-center" style={{ height: "10%" }}>
+            <div className="flex-center" style={{ height: "10%", containerType: "inline-size" }}>
               <span className="site-title site-title-small">Album Poster Generator</span>
             </div>
 
