@@ -1,5 +1,5 @@
 import Sentry from "../lib/sentry.js";
-import getSpotifyToken from "../spotifyAuth.js";
+import getSpotifyToken from "../lib/spotifyAuth.js";
 import { body, validationResult } from "express-validator";
 
 const validQuery = body("query")
