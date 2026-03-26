@@ -144,6 +144,7 @@
   font-family: "Iosevka Charon", sans-serif;
   font-size: clamp(1.5rem, 5vw + 1rem, 5rem);
   background: linear-gradient(45deg, indigo, #c0382b, indigo);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   user-select: none;
@@ -159,6 +160,7 @@
   font-family: "Iosevka Charon", sans-serif;
   font-size: clamp(0.5rem, 2vw + 0.6rem, 1.5rem);
   background: linear-gradient(90deg, red, orange, rgb(172, 14, 61), purple, blue, indigo, violet);
+  background-clip: text;
   -webkit-background-clip: text; /* For Chrome/Safari */
   -webkit-text-fill-color: transparent;
   user-select: none;
@@ -333,6 +335,7 @@
 .album-grid-name {
   font-size: 18px;
   background: linear-gradient(45deg, indigo, #c0382b, indigo);
+  background-clip: text;
   -webkit-background-clip: text; /* For Chrome/Safari */
   -webkit-text-fill-color: transparent;
   user-select: none;
@@ -343,6 +346,7 @@
 
 .album-grid-item:hover .album-grid-name {
   background: none;
+  background-clip: initial;
   -webkit-background-clip: initial;
   -webkit-text-fill-color: initial;
   color: white;
