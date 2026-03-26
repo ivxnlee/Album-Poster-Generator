@@ -1,6 +1,6 @@
-const Sentry = require("../lib/sentry.js");
-const getSpotifyToken = require("../spotifyAuth.js");
-const { body, validationResult } = require("express-validator");
+import Sentry from "../lib/sentry.js";
+import getSpotifyToken from "../spotifyAuth.js";
+import { body, validationResult } from "express-validator";
 
 const validQuery = body("query")
   .trim()
