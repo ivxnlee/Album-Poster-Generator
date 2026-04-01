@@ -563,7 +563,7 @@
 @keyframes swipe {
   0% {
     transform: translateX(-10px);
-    opacity: 0.4;
+    opacity: 1;
   }
   40% {
     transform: translateX(10px);
@@ -575,7 +575,7 @@
   }
   100% {
     transform: translateX(-10px);
-    opacity: 0.4;
+    opacity: 1;
   }
 }
 
