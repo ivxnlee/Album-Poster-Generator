@@ -17,6 +17,7 @@ function App() {
   const posterRef2 = useRef<HTMLDivElement>(null);
   const posterRefDownload = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const dropupRef = useRef<HTMLDivElement>(null);
   const [userFlow, setUserFlow] = useState<number>(1);
   const [searchName, setSearchName] = useState<string>("");
   const [inputHasLength, setInputHasLength] = useState<boolean>(false);
@@ -31,7 +32,9 @@ function App() {
   const [selectedAlbum, setSelectedAlbum] = useState<SpotifyData | null>(null);
   const [albumTracks, setAlbumTracks] = useState<SpotifyTrack[]>([]);
   const [albumColors, setAlbumColors] = useState<string[]>([]);
-  const [selectedDesignIndex, setSelectedDesignIndex] = useState(0);
+  const [selectedDesignIndex, setSelectedDesignIndex] = useState<number>(0);
+  const [popUpOpened, setPopUpOpened] = useState<boolean>(true);
+  const [downloadDropUpOpened, setDownloadDropUpOpened] = useState<boolean>(false);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [emblaRef, emblaApi] = useEmblaCarousel();
@@ -54,6 +57,21 @@ function App() {
     window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Handle closing download dropup when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropupRef.current && !dropupRef.current.contains(event.target as Node)) {
+        setDownloadDropUpOpened(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   useEffect(() => {
@@ -198,31 +216,46 @@ function App() {
   };
 
   // Handle PDF Download during User Flow 3
-  const downloadPDF = async () => {
+  const handleDownload = async (downloadType: string) => {
     if (!posterRefDownload.current) return;
 
     const canvas = await html2canvas(posterRefDownload.current, {
-      scale: 3, // increase for better quality
+      scale: 3, // handles image quality for download by increasing resolution of canvas
       useCORS: true,
     });
     if (selectedAlbum === null) return;
 
     const imgData = canvas.toDataURL("image/png");
 
-    // Maintain aspect ratio
-    const imgWidth = canvas.width;
-    const imgHeight = canvas.height;
+    const fileName = `[Album Poster Generator] ${selectedAlbum.artist.replace(
+      /[^a-zA-Z0-9]/g,
+      "_"
+    )}_${selectedAlbum.name.replace(/[^a-zA-Z0-9]/g, "_")}`;
 
-    const pdf = new jsPDF({
-      orientation: imgWidth > imgHeight ? "landscape" : "portrait",
-      unit: "px",
-      format: [imgWidth, imgHeight],
-    });
+    // PNG DOWNLOAD
+    if (downloadType === "png") {
+      const link = document.createElement("a");
+      link.href = imgData;
+      link.download = `${fileName}.png`;
+      link.click();
 
-    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-    pdf.save(
-      `[Album Poster Generator] ${selectedAlbum.artist.replace(/[^a-zA-Z0-9]/g, "_")}_${selectedAlbum.name.replace(/[^a-zA-Z0-9]/g, "_")}.pdf`
-    );
+      return;
+    }
+
+    // PDF DOWNLOAD
+    if (downloadType === "pdf") {
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "px",
+        format: [imgWidth, imgHeight],
+      });
+
+      pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+      pdf.save(`${fileName}.pdf`);
+    }
   };
 
   return (
@@ -231,7 +264,9 @@ function App() {
       style={
         userFlow === 3
           ? { width: Math.min(window.innerWidth, scale * 829), paddingLeft: 0, paddingRight: 0 }
-          : {}
+          : userFlow === 2
+            ? { justifyContent: "normal" }
+            : {}
       }
     >
       {isLoading && <LoadingOverlay />}
@@ -263,6 +298,10 @@ function App() {
         </>
       )}
 
+      {userFlow === 1 && (
+        <img src="/sample.png" alt="Sample Poster Previews" className="sample-image" />
+      )}
+
       {userFlow === 2 ? (
         <div className="album-grid">
           {albumsDisplay.map((album, index) => (
@@ -291,7 +330,22 @@ function App() {
             <div className="flex-center" style={{ height: "10%", containerType: "inline-size" }}>
               <span className="site-title site-title-small">Album Poster Generator</span>
             </div>
-
+            {popUpOpened && (
+              <div className="popup-overlay">
+                <div className="popup">
+                  <div className="swipe-icon">
+                    <span className="hand">👆</span>
+                  </div>
+                  <p>
+                    Swipe left or right on the poster {!isMobile && "OR use keyboard arrows"} to
+                    change designs
+                  </p>
+                  <button className="btn-dismiss" onClick={() => setPopUpOpened(false)}>
+                    Got it
+                  </button>
+                </div>
+              </div>
+            )}
             <div className="embla">
               {!isMobile && (
                 <div
@@ -372,13 +426,26 @@ function App() {
                 >
                   <ArrowBigLeft size={36} color={"#ffffff"} />
                 </button>
-                <button
-                  className="standard-button download-button"
-                  onClick={downloadPDF}
-                  aria-label="Download Button"
-                >
-                  <Download size={36} color={"#ffffff"} />
-                </button>
+                <div ref={dropupRef} className={`dropup ${downloadDropUpOpened ? "open" : ""}`}>
+                  <button
+                    className="standard-button download-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setDownloadDropUpOpened(!downloadDropUpOpened);
+                    }}
+                    aria-label="Download Button"
+                  >
+                    <Download size={36} color={"#ffffff"} />
+                  </button>
+                  <div className="dropup-menu">
+                    <button className="dropup-item" onClick={() => handleDownload("pdf")}>
+                      PDF
+                    </button>
+                    <button className="dropup-item" onClick={() => handleDownload("png")}>
+                      PNG
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </>

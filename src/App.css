@@ -305,11 +305,67 @@
   }
 }
 
+.dropup {
+  position: relative;
+  display: inline-block;
+}
+
+/* MENU */
+.dropup-menu {
+  position: absolute;
+  bottom: calc(100% + 3px);
+  left: 50%;
+  transform: translateX(-50%) scale(0.95);
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  padding: 8px;
+  border-radius: 12px;
+  background: rgba(3, 153, 3, 0.2);
+  backdrop-filter: blur(8px);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.15s ease;
+}
+
+/* SHOW STATE */
+.dropup.open .dropup-menu {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+  pointer-events: auto;
+}
+
+.dropup-item {
+  min-height: 48px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.25);
+
+  transition: background 0.2s;
+}
+
+.dropup-item:hover {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.sample-image {
+  width: 100%;
+  max-width: 760px;
+  margin: 20px;
+  align-self: center;
+  border-radius: 20px;
+}
+
 .album-grid {
   font-family: "Iosevka Charon", sans-serif;
   display: grid;
   gap: 3vh 1vw;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   padding: 10px;
   overflow-y: auto;
 }
@@ -396,7 +452,7 @@
   color: white;
 
   background: rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(24px);
 
   cursor: pointer;
   transition: all 0.2s ease;
@@ -464,6 +520,87 @@
   min-width: 0;
 }
 
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  font-family: "Iosevka Charon", sans-serif;
+}
+
+/* Frosted glass card */
+.popup {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 0.5px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  padding: 40px 36px 32px;
+  max-width: 340px;
+  width: 88%;
+  color: white;
+  text-align: center;
+}
+
+/* Animated swipe icon */
+.swipe-icon {
+  margin: 0 auto 22px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hand {
+  font-size: 36px;
+  display: inline-block;
+  animation: swipe 2s ease-in-out infinite;
+}
+
+@keyframes swipe {
+  0% {
+    transform: translateX(-10px);
+    opacity: 0.4;
+  }
+  40% {
+    transform: translateX(10px);
+    opacity: 1;
+  }
+  60% {
+    transform: translateX(10px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-10px);
+    opacity: 0.4;
+  }
+}
+
+.btn-dismiss {
+  background: rgba(255, 255, 255, 0.92);
+  color: #1a1430;
+  border: none;
+  border-radius: 100px;
+  padding: 11px 32px;
+  font-family: "Iosevka Charon", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    transform 0.15s;
+}
+
+.btn-dismiss:hover {
+  background: #fff;
+  transform: scale(1.02);
+}
+.btn-dismiss:active {
+  transform: scale(0.97);
+}
 @media print {
   .outer-container {
     display: none !important;
