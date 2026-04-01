@@ -20,6 +20,7 @@ function App() {
   const dropupRef = useRef<HTMLDivElement>(null);
   const [userFlow, setUserFlow] = useState<number>(1);
   const [searchName, setSearchName] = useState<string>("");
+  const [prevSearchName, setPrevSearchName] = useState<string>("");
   const [inputHasLength, setInputHasLength] = useState<boolean>(false);
   const [albumsDisplay, setAlbumsDisplay] = useState<SpotifyData[]>([]);
   const [isTouch, setIsTouch] = useState<boolean>(false);
@@ -149,27 +150,33 @@ function App() {
     setSearchName(filtered);
   };
 
-  // Handle Album Search during User Flow 1
+  // Handle Album Search during User Flow 1 and Flow 2
   const handleAlbumSearch = async () => {
     searchInputRef.current?.blur();
-    setIsLoading(true);
-    const response = await fetch(`/api/handleSpotifySearchRequest`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: searchName }),
-    });
+    if (searchName.trim() === prevSearchName.trim()) {
+      // If search query is the same as previous, do not make API call again
+      return;
+    } else {
+      setIsLoading(true);
+      const response = await fetch(`/api/handleSpotifySearchRequest`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: searchName }),
+      });
 
-    if (!response.ok) {
-      console.error(response);
-      setIsLoading(false);
-    }
+      if (!response.ok) {
+        console.error(response);
+        setIsLoading(false);
+      }
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (data.length > 0) {
-      setAlbumsDisplay(data);
-      setUserFlow(2);
-      setIsLoading(false);
+      if (data.length > 0) {
+        setAlbumsDisplay(data);
+        setUserFlow(2);
+        setPrevSearchName(searchName);
+        setIsLoading(false);
+      }
     }
   };
 
