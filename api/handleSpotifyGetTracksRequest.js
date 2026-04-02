@@ -34,6 +34,10 @@ export default async function handler(req, res) {
   try {
     const token = await getSpotifyToken();
 
+    if (!token) {
+      throw new Error("Failed to obtain Spotify access token");
+    }
+
     const response = await fetch(`https://api.spotify.com/v1/albums/${albumID}/tracks?limit=36`, {
       headers: {
         Authorization: `Bearer ${token}`,
