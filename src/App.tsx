@@ -329,7 +329,7 @@ function App() {
                 )}
                 <img className="album-grid-img" src={album.image} alt={album.name} />
               </div>
-              <div className="flex-col" style={{ height: "50%" }}>
+              <div className="flex-col" style={{ height: "40%" }}>
                 <span className="album-grid-name">{truncateText(album.name)}</span>
                 <span style={{ userSelect: "none" }}>{truncateText(album.artist)}</span>
               </div>
