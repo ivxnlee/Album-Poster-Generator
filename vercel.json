@@ -5,7 +5,7 @@
       "has": [
         {
           "type": "host",
-          "value": "https://album-poster-generator-five.vercel.app"
+          "value": "album-poster-generator-five.vercel.app"
         }
       ],
       "destination": "https://poster.ivanl.dev/$1",
