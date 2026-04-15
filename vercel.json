@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "destination": "https://poster.ivanl.dev/",
+      "permanent": true
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # 🎵 Album Poster Generator
 
-A sleek web app that transforms your favourite albums into stunning, print-ready posters — powered by the Spotify API. Search any album, pick a template, and download your poster in seconds.
+A sleek web app that transforms your favourite albums into stunning, print-ready posters — powered by the Spotify API. Search any album, pick a template, and download your poster in seconds. [Click here for published site](https://poster.ivanl.dev/)
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 ![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)
