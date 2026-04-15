@@ -139,7 +139,12 @@ const PosterView = forwardRef<HTMLDivElement, PosterViewProps>(
               <div className="poster-title-container-style1">
                 <div
                   className="flex-col"
-                  style={{ width: "70%", justifyContent: "center", whiteSpace: "nowrap" }}
+                  style={{
+                    width: "70%",
+                    justifyContent: "center",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                  }}
                 >
                   <span
                     ref={titleSizeRef1}

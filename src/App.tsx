@@ -265,6 +265,10 @@ function App() {
     }
   };
 
+  function truncateText(text: string, limit = 47) {
+    return text.length <= limit ? text : text.slice(0, limit) + "...";
+  }
+
   return (
     <div
       className="outer-container"
@@ -306,7 +310,7 @@ function App() {
       )}
 
       {userFlow === 1 && (
-        <img src="/sample.png" alt="Sample Poster Previews" className="sample-image" />
+        <img src="/sample-bg-removed.png" alt="Sample Poster Previews" className="sample-image" />
       )}
 
       {userFlow === 2 ? (
@@ -325,8 +329,10 @@ function App() {
                 )}
                 <img className="album-grid-img" src={album.image} alt={album.name} />
               </div>
-              <span className="album-grid-name">{album.name}</span>
-              <span style={{ userSelect: "none" }}>{album.artist}</span>
+              <div className="flex-col" style={{ height: "50%" }}>
+                <span className="album-grid-name">{truncateText(album.name)}</span>
+                <span style={{ userSelect: "none" }}>{truncateText(album.artist)}</span>
+              </div>
             </div>
           ))}
         </div>

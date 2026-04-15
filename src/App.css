@@ -265,6 +265,7 @@
 
 .submit-button:hover {
   background-color: #80231a;
+  animation: bounceButtons 0.4s ease;
 }
 
 .standard-button {
@@ -283,6 +284,7 @@
 
 .back-button:hover {
   background: rgba(153, 3, 3, 0.85);
+  animation: bounceButtons 0.4s ease;
 }
 
 .download-button {
@@ -291,6 +293,7 @@
 
 .download-button:hover {
   background: rgba(3, 153, 3, 0.85);
+  animation: bounceButtons 0.4s ease;
 }
 
 @keyframes glowing {
@@ -374,14 +377,21 @@
   display: flex;
   flex-direction: column;
   text-align: center;
+  height: 300px;
   padding: 2px;
+  background: rgba(112, 112, 112, 0.09);
+  backdrop-filter: blur(24px);
+  border-radius: 24px;
   transition: background-color 0.3s ease;
+  overflow: clip;
 }
 
 .album-grid-item:hover {
-  background-color: #c0382b;
+  background-color: rgba(192, 56, 43, 0.85);
   color: white;
   cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 30px;
+  animation: bounce 0.4s ease;
 }
 
 .album-grid-img {
@@ -417,6 +427,8 @@
   display: inline-block;
   width: 100%;
   overflow: hidden; /* keeps overlay contained */
+  border-radius: 22px 22px 0 0;
+  height: 50%;
 }
 
 .album-grid-overlay {
@@ -598,11 +610,43 @@
   background: #fff;
   transform: scale(1.02);
 }
+
 .btn-dismiss:active {
   transform: scale(0.97);
 }
+
 @media print {
   .outer-container {
     display: none !important;
+  }
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.03);
+  }
+  70% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes bounceButtons {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.15);
+  }
+  70% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
   }
 }
