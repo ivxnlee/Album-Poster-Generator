@@ -310,7 +310,7 @@ function App() {
       )}
 
       {userFlow === 1 && (
-        <img src="/sample-bg-removed.png" alt="Sample Poster Previews" className="sample-image" />
+        <img src="/sample-bg-removed.webp" alt="Sample Poster Previews" className="sample-image" />
       )}
 
       {userFlow === 2 ? (

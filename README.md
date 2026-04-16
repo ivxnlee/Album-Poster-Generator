@@ -10,7 +10,7 @@ A sleek web app that transforms your favourite albums into stunning, print-ready
 
 ---
 
-![Preview Posters](./public/sample.png)
+![Preview Posters](./public/sample.webp)
 
 ## ✨ Features
 
