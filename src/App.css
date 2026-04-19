@@ -146,10 +146,7 @@
 .site-title {
   font-family: "Iosevka Charon", sans-serif;
   font-size: clamp(1.5rem, 5vw + 1rem, 5rem);
-  background: linear-gradient(45deg, indigo, #c0382b, indigo);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: white;
   user-select: none;
   text-align: center;
 }
@@ -162,10 +159,7 @@
 .site-subtitle {
   font-family: "Iosevka Charon", sans-serif;
   font-size: clamp(0.5rem, 2vw + 0.6rem, 1.5rem);
-  background: linear-gradient(90deg, red, orange, rgb(172, 14, 61), purple, blue, indigo, violet);
-  background-clip: text;
-  -webkit-background-clip: text; /* For Chrome/Safari */
-  -webkit-text-fill-color: transparent;
+  color: white;
   user-select: none;
   text-align: center;
 }
@@ -228,6 +222,11 @@
   box-sizing: border-box;
   padding: 14px;
   z-index: 2;
+  background-color: #ffafff;
+}
+
+.search-input::placeholder {
+  color: rgba(24, 24, 24, 0.7);
 }
 
 .search-input.empty {
@@ -254,7 +253,7 @@
   border-top-right-radius: 18px;
   border-bottom-right-radius: 18px;
   border: none;
-  background-color: #c0382b;
+  background-color: #782cf3;
   color: white;
   font-size: 1.5rem;
   font-weight: bold;
@@ -264,7 +263,7 @@
 }
 
 .submit-button:hover {
-  background-color: #80231a;
+  background-color: #5917c4;
   animation: bounceButtons 0.4s ease;
 }
 
@@ -279,11 +278,11 @@
 }
 
 .back-button {
-  background: rgba(153, 3, 3, 0.75);
+  background: #782cf3;
 }
 
 .back-button:hover {
-  background: rgba(153, 3, 3, 0.85);
+  background: #5917c4;
   animation: bounceButtons 0.4s ease;
 }
 
@@ -380,7 +379,7 @@
   width: 180px;
   height: 300px;
   padding: 2px;
-  background: rgba(112, 112, 112, 0.09);
+  background: rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(24px);
   border-radius: 24px;
   transition: background-color 0.3s ease;
@@ -388,10 +387,10 @@
 }
 
 .album-grid-item:hover {
-  background-color: rgba(192, 56, 43, 0.85);
+  background-color: #5917c4;
   color: white;
   cursor: pointer;
-  box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 30px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 15px;
   animation: bounce 0.4s ease;
 }
 
@@ -404,17 +403,20 @@
 
 .album-grid-name {
   font-size: 18px;
-  background: linear-gradient(45deg, indigo, #c0382b, indigo);
-  background-clip: text;
-  -webkit-background-clip: text; /* For Chrome/Safari */
-  -webkit-text-fill-color: transparent;
+  color: white;
   user-select: none;
   transition:
     color 0.3s ease,
     text-shadow 0.3s ease;
 }
 
-.album-grid-item:hover .album-grid-name {
+.album-grid-artist {
+  user-select: none;
+  color: #a4ff87;
+}
+
+.album-grid-item:hover .album-grid-name,
+.album-grid-item:hover .album-grid-artist {
   background: none;
   background-clip: initial;
   -webkit-background-clip: initial;
@@ -489,6 +491,8 @@
   text-align: center;
   height: 10%;
   display: flex;
+  margin-top: 5px;
+  margin-bottom: 5px;
   margin-left: 7%;
   margin-right: 7%;
   justify-content: flex-end;
@@ -499,6 +503,9 @@
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(24px);
+  border-radius: 24px;
 }
 
 .loading-overlay {
@@ -650,5 +657,35 @@
   }
   100% {
     transform: scale(1);
+  }
+}
+
+.bg {
+  animation: slide 7s ease-in-out infinite alternate;
+  background-image: linear-gradient(-60deg, rgb(255, 144, 70) 50%, rgb(252, 93, 93) 50%);
+  bottom: 0;
+  left: -50%;
+  opacity: 0.5;
+  position: fixed;
+  right: -50%;
+  top: 0;
+  z-index: -1;
+}
+
+.bg2 {
+  animation-direction: alternate-reverse;
+  animation-duration: 4s;
+}
+
+.bg3 {
+  animation-duration: 5s;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(-25%);
+  }
+  100% {
+    transform: translateX(25%);
   }
 }

@@ -280,6 +280,9 @@ function App() {
             : {}
       }
     >
+      <div className="bg"></div>
+      <div className="bg bg2"></div>
+      <div className="bg bg3"></div>
       {isLoading && <LoadingOverlay />}
       {(userFlow === 1 || userFlow === 2) && (
         <>
@@ -331,7 +334,7 @@ function App() {
               </div>
               <div className="flex-col" style={{ height: "40%" }}>
                 <span className="album-grid-name">{truncateText(album.name)}</span>
-                <span style={{ userSelect: "none" }}>{truncateText(album.artist)}</span>
+                <span className="album-grid-artist">{truncateText(album.artist)}</span>
               </div>
             </div>
           ))}
