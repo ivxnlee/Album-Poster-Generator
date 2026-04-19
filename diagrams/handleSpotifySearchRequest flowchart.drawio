@@ -1,0 +1,137 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36" version="29.6.6">
+  <diagram name="Page-1" id="WsypV8ldZ13xvbvUhqCc">
+    <mxGraphModel dx="2066" dy="1201" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="5KqRfeoxrDPlalewvEv3-4" edge="1" parent="1" source="5KqRfeoxrDPlalewvEv3-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="5KqRfeoxrDPlalewvEv3-3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-2" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Start" vertex="1">
+          <mxGeometry height="80" width="120" x="40" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-6" edge="1" parent="1" source="5KqRfeoxrDPlalewvEv3-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="5KqRfeoxrDPlalewvEv3-5" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-3" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" value="&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;User types Album or Artist name into search input and submit&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="140" x="240" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-8" edge="1" parent="1" source="5KqRfeoxrDPlalewvEv3-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="5KqRfeoxrDPlalewvEv3-7" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-5" parent="1" style="whiteSpace=wrap;html=1;" value="&lt;p style=&quot;&quot;&gt;Webpage sends POST request to&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;handleSpotifySearchRequest&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;using Fetch API with input string in body&lt;/span&gt;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="60" width="210" x="460" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-10" edge="1" parent="1" source="5KqRfeoxrDPlalewvEv3-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="5KqRfeoxrDPlalewvEv3-9" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-7" parent="1" style="whiteSpace=wrap;html=1;" value="handleSpotifySearchRequest receives request" vertex="1">
+          <mxGeometry height="60" width="165" x="760" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-12" edge="1" parent="1" source="5KqRfeoxrDPlalewvEv3-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="5KqRfeoxrDPlalewvEv3-11" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-13" connectable="0" parent="5KqRfeoxrDPlalewvEv3-12" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Yes" vertex="1">
+          <mxGeometry relative="1" x="-0.1692" y="-1" as="geometry">
+            <mxPoint y="-11" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-43" edge="1" parent="1" source="5KqRfeoxrDPlalewvEv3-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="5KqRfeoxrDPlalewvEv3-36">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-44" connectable="0" parent="5KqRfeoxrDPlalewvEv3-43" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="No" vertex="1">
+          <mxGeometry relative="1" x="-0.8133" y="-2" as="geometry">
+            <mxPoint x="-14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-9" parent="1" style="rhombus;whiteSpace=wrap;html=1;" value="Is request&amp;nbsp;&lt;div&gt;method POST?&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="112.5" x="1000" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-15" edge="1" parent="1" source="5KqRfeoxrDPlalewvEv3-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="5KqRfeoxrDPlalewvEv3-14" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-18" connectable="0" parent="5KqRfeoxrDPlalewvEv3-15" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Yes" vertex="1">
+          <mxGeometry relative="1" x="-0.28" as="geometry">
+            <mxPoint x="6" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-41" edge="1" parent="1" source="5KqRfeoxrDPlalewvEv3-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="5KqRfeoxrDPlalewvEv3-36">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-42" connectable="0" parent="5KqRfeoxrDPlalewvEv3-41" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="No" vertex="1">
+          <mxGeometry relative="1" x="0.0404" y="3" as="geometry">
+            <mxPoint x="-14" y="-6" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-11" parent="1" style="rhombus;whiteSpace=wrap;html=1;" value="&lt;div&gt;Did headers&amp;nbsp;&lt;/div&gt;&lt;div&gt;include user-agent?&amp;nbsp;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="122.5" x="1200" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-17" edge="1" parent="1" source="5KqRfeoxrDPlalewvEv3-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="5KqRfeoxrDPlalewvEv3-16" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-14" parent="1" style="whiteSpace=wrap;html=1;" value="Validate received user input" vertex="1">
+          <mxGeometry height="60" width="120" x="1410" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-27" edge="1" parent="1" source="5KqRfeoxrDPlalewvEv3-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="5KqRfeoxrDPlalewvEv3-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-28" connectable="0" parent="5KqRfeoxrDPlalewvEv3-27" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Yes" vertex="1">
+          <mxGeometry relative="1" x="-0.04" y="3" as="geometry">
+            <mxPoint y="-7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-39" edge="1" parent="1" source="5KqRfeoxrDPlalewvEv3-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="5KqRfeoxrDPlalewvEv3-36">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1695" y="600" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-40" connectable="0" parent="5KqRfeoxrDPlalewvEv3-39" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="No" vertex="1">
+          <mxGeometry relative="1" x="-0.8762" y="-3" as="geometry">
+            <mxPoint x="-12" y="12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-16" parent="1" style="rhombus;whiteSpace=wrap;html=1;" value="Does user input meet validation criteria?" vertex="1">
+          <mxGeometry height="80" width="150" x="1620" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-24" edge="1" parent="1" source="5KqRfeoxrDPlalewvEv3-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="5KqRfeoxrDPlalewvEv3-23" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-19" parent="1" style="whiteSpace=wrap;html=1;" value="Calls getSpotifyToken()" vertex="1">
+          <mxGeometry height="60" width="120" x="1870" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-21" parent="1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fontColor=#000000;darkOpacity=0.05;fillColor=#FFF9B2;strokeColor=none;fillStyle=solid;direction=west;gradientDirection=north;gradientColor=#FFF2A1;shadow=1;size=20;autosizeText=1;fontSize=11;" value="&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;handleSpotifySearchRequest is using Vercel Functions (Serverless)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="80" width="160" x="334" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-26" edge="1" parent="1" source="5KqRfeoxrDPlalewvEv3-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="5KqRfeoxrDPlalewvEv3-25" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-23" parent="1" style="whiteSpace=wrap;html=1;" value="Fetch search results from Spotify API" vertex="1">
+          <mxGeometry height="60" width="120" x="1870" y="690" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-31" edge="1" parent="1" source="5KqRfeoxrDPlalewvEv3-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="5KqRfeoxrDPlalewvEv3-30" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-25" parent="1" style="whiteSpace=wrap;html=1;" value="Filter received results to a new array" vertex="1">
+          <mxGeometry height="60" width="120" x="1635" y="690" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-29" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="End" vertex="1">
+          <mxGeometry height="80" width="120" x="1201.25" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-32" edge="1" parent="1" source="5KqRfeoxrDPlalewvEv3-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="5KqRfeoxrDPlalewvEv3-29">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-30" parent="1" style="whiteSpace=wrap;html=1;" value="Respond with array data and display to user" vertex="1">
+          <mxGeometry height="60" width="120" x="1410" y="690" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-45" edge="1" parent="1" source="5KqRfeoxrDPlalewvEv3-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="5KqRfeoxrDPlalewvEv3-29">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5KqRfeoxrDPlalewvEv3-36" parent="1" style="whiteSpace=wrap;html=1;" value="Respond with error code and message" vertex="1">
+          <mxGeometry height="60" width="120" x="1201.25" y="570" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

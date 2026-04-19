@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "album-poster-generator-five.vercel.app"
+        }
+      ],
+      "destination": "https://poster.ivanl.dev/$1",
+      "permanent": true
+    }
+  ]
+}

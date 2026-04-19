@@ -16,8 +16,11 @@ function App() {
   const posterRef1 = useRef<HTMLDivElement>(null);
   const posterRef2 = useRef<HTMLDivElement>(null);
   const posterRefDownload = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const dropupRef = useRef<HTMLDivElement>(null);
   const [userFlow, setUserFlow] = useState<number>(1);
   const [searchName, setSearchName] = useState<string>("");
+  const [prevSearchName, setPrevSearchName] = useState<string>("");
   const [inputHasLength, setInputHasLength] = useState<boolean>(false);
   const [albumsDisplay, setAlbumsDisplay] = useState<SpotifyData[]>([]);
   const [isTouch, setIsTouch] = useState<boolean>(false);
@@ -30,7 +33,9 @@ function App() {
   const [selectedAlbum, setSelectedAlbum] = useState<SpotifyData | null>(null);
   const [albumTracks, setAlbumTracks] = useState<SpotifyTrack[]>([]);
   const [albumColors, setAlbumColors] = useState<string[]>([]);
-  const [selectedDesignIndex, setSelectedDesignIndex] = useState(0);
+  const [selectedDesignIndex, setSelectedDesignIndex] = useState<number>(0);
+  const [popUpOpened, setPopUpOpened] = useState<boolean>(true);
+  const [downloadDropUpOpened, setDownloadDropUpOpened] = useState<boolean>(false);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [emblaRef, emblaApi] = useEmblaCarousel();
@@ -53,6 +58,21 @@ function App() {
     window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Handle closing download dropup when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropupRef.current && !dropupRef.current.contains(event.target as Node)) {
+        setDownloadDropUpOpened(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   useEffect(() => {
@@ -130,40 +150,44 @@ function App() {
     setSearchName(filtered);
   };
 
-  // Handle Album Search during User Flow 1
+  // Handle Album Search during User Flow 1 and Flow 2
   const handleAlbumSearch = async () => {
-    setIsLoading(true);
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/handleSpotifySearchRequest`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: searchName }),
-    });
+    searchInputRef.current?.blur();
+    if (searchName.trim() === prevSearchName.trim()) {
+      // If search query is the same as previous, do not make API call again
+      return;
+    } else {
+      setIsLoading(true);
+      const response = await fetch(`/api/handleSpotifySearchRequest`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: searchName }),
+      });
 
-    if (!response.ok) {
-      console.error(response);
-      setIsLoading(false);
-    }
+      if (!response.ok) {
+        console.error(response);
+        setIsLoading(false);
+      }
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (data.length > 0) {
-      setAlbumsDisplay(data);
-      setUserFlow(2);
-      setIsLoading(false);
+      if (data.length > 0) {
+        setAlbumsDisplay(data);
+        setUserFlow(2);
+        setPrevSearchName(searchName);
+        setIsLoading(false);
+      }
     }
   };
 
   // fetch album tracks during User Flow 3 after album selection
   const getAlbumTracks = async (albumID: string) => {
     setIsLoading(true);
-    const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/handleSpotifyGetTracksRequest`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ albumID: albumID }),
-      }
-    );
+    const response = await fetch(`/api/handleSpotifyGetTracksRequest`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ albumID: albumID }),
+    });
 
     if (!response.ok) {
       console.error(response);
@@ -199,38 +223,66 @@ function App() {
   };
 
   // Handle PDF Download during User Flow 3
-  const downloadPDF = async () => {
+  const handleDownload = async (downloadType: string) => {
     if (!posterRefDownload.current) return;
 
     const canvas = await html2canvas(posterRefDownload.current, {
-      scale: 3, // increase for better quality
+      scale: 3, // handles image quality for download by increasing resolution of canvas
       useCORS: true,
     });
     if (selectedAlbum === null) return;
 
     const imgData = canvas.toDataURL("image/png");
 
-    // Maintain aspect ratio
-    const imgWidth = canvas.width;
-    const imgHeight = canvas.height;
+    const fileName = `[Album Poster Generator] ${selectedAlbum.artist.replace(
+      /[^a-zA-Z0-9]/g,
+      "_"
+    )}_${selectedAlbum.name.replace(/[^a-zA-Z0-9]/g, "_")}`;
 
-    const pdf = new jsPDF({
-      orientation: imgWidth > imgHeight ? "landscape" : "portrait",
-      unit: "px",
-      format: [imgWidth, imgHeight],
-    });
+    // PNG DOWNLOAD
+    if (downloadType === "png") {
+      const link = document.createElement("a");
+      link.href = imgData;
+      link.download = `${fileName}.png`;
+      link.click();
 
-    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-    pdf.save(
-      `[Album Poster Generator] ${selectedAlbum.artist.replace(/[^a-zA-Z0-9]/g, "_")}_${selectedAlbum.name.replace(/[^a-zA-Z0-9]/g, "_")}.pdf`
-    );
+      return;
+    }
+
+    // PDF DOWNLOAD
+    if (downloadType === "pdf") {
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "px",
+        format: [imgWidth, imgHeight],
+      });
+
+      pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+      pdf.save(`${fileName}.pdf`);
+    }
   };
+
+  function truncateText(text: string, limit = 47) {
+    return text.length <= limit ? text : text.slice(0, limit) + "...";
+  }
 
   return (
     <div
       className="outer-container"
-      style={userFlow === 3 ? { width: Math.min(window.innerWidth, scale * 829), padding: 0 } : {}}
+      style={
+        userFlow === 3
+          ? { width: Math.min(window.innerWidth, scale * 829), paddingLeft: 0, paddingRight: 0 }
+          : userFlow === 2
+            ? { justifyContent: "normal" }
+            : {}
+      }
     >
+      <div className="bg"></div>
+      <div className="bg bg2"></div>
+      <div className="bg bg3"></div>
       {isLoading && <LoadingOverlay />}
       {(userFlow === 1 || userFlow === 2) && (
         <>
@@ -239,6 +291,7 @@ function App() {
           <div className="search-input-wrapper">
             <div className="search-input-container">
               <input
+                ref={searchInputRef}
                 type="text"
                 className={`search-input ${!inputHasLength && "empty"}`}
                 placeholder="Search For Album OR Artist"
@@ -259,6 +312,10 @@ function App() {
         </>
       )}
 
+      {userFlow === 1 && (
+        <img src="/sample-bg-removed.webp" alt="Sample Poster Previews" className="sample-image" />
+      )}
+
       {userFlow === 2 ? (
         <div className="album-grid">
           {albumsDisplay.map((album, index) => (
@@ -275,8 +332,10 @@ function App() {
                 )}
                 <img className="album-grid-img" src={album.image} alt={album.name} />
               </div>
-              <span className="album-grid-name">{album.name}</span>
-              <span style={{ userSelect: "none" }}>{album.artist}</span>
+              <div className="flex-col" style={{ height: "40%" }}>
+                <span className="album-grid-name">{truncateText(album.name)}</span>
+                <span className="album-grid-artist">{truncateText(album.artist)}</span>
+              </div>
             </div>
           ))}
         </div>
@@ -284,10 +343,25 @@ function App() {
         userFlow === 3 &&
         selectedAlbum && (
           <>
-            <div className="flex-center" style={{ height: "10%" }}>
+            <div className="flex-center" style={{ height: "10%", containerType: "inline-size" }}>
               <span className="site-title site-title-small">Album Poster Generator</span>
             </div>
-
+            {popUpOpened && (
+              <div className="popup-overlay">
+                <div className="popup">
+                  <div className="swipe-icon">
+                    <span className="hand">👆</span>
+                  </div>
+                  <p>
+                    Swipe left or right on the poster {!isMobile && "OR use keyboard arrows"} to
+                    change designs
+                  </p>
+                  <button className="btn-dismiss" onClick={() => setPopUpOpened(false)}>
+                    Got it
+                  </button>
+                </div>
+              </div>
+            )}
             <div className="embla">
               {!isMobile && (
                 <div
@@ -368,13 +442,26 @@ function App() {
                 >
                   <ArrowBigLeft size={36} color={"#ffffff"} />
                 </button>
-                <button
-                  className="standard-button download-button"
-                  onClick={downloadPDF}
-                  aria-label="Download Button"
-                >
-                  <Download size={36} color={"#ffffff"} />
-                </button>
+                <div ref={dropupRef} className={`dropup ${downloadDropUpOpened ? "open" : ""}`}>
+                  <button
+                    className="standard-button download-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setDownloadDropUpOpened(!downloadDropUpOpened);
+                    }}
+                    aria-label="Download Button"
+                  >
+                    <Download size={36} color={"#ffffff"} />
+                  </button>
+                  <div className="dropup-menu">
+                    <button className="dropup-item" onClick={() => handleDownload("pdf")}>
+                      PDF
+                    </button>
+                    <button className="dropup-item" onClick={() => handleDownload("png")}>
+                      PNG
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </>
