@@ -75,6 +75,7 @@ function App() {
     };
   }, []);
 
+  // Handle input validation and formatting for search query
   useEffect(() => {
     setInputHasLength(searchName.trim().length > 0);
   }, [searchName]);
@@ -265,6 +266,7 @@ function App() {
     }
   };
 
+  // Utility function to truncate text with ellipsis if it exceeds a certain length
   function truncateText(text: string, limit = 47) {
     return text.length <= limit ? text : text.slice(0, limit) + "...";
   }

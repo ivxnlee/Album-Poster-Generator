@@ -28,12 +28,13 @@ const PosterView = forwardRef<HTMLDivElement, PosterViewProps>(
     const [titleFontSize3, setTitleFontSize3] = useState("48px");
     const [tracklistFontSize3, setTracklistFontSize3] = useState("16px");
 
+    // Adjust font sizes to fit within their containers for designs 1, 2, and 3
     useEffect(() => {
       if (titleSizeRef1.current) {
         let sizeStyle1 = 36;
 
         const el = titleSizeRef1.current;
-
+        // Reduce font size until the title fits within the container width, with a minimum font size of 12px
         while (el.scrollWidth > el.clientWidth && sizeStyle1 > 12) {
           sizeStyle1 -= 1;
           el.style.fontSize = `${sizeStyle1}px`;
@@ -46,7 +47,7 @@ const PosterView = forwardRef<HTMLDivElement, PosterViewProps>(
         let sizeStyle2 = 32;
 
         const el = titleSizeRef2.current;
-
+        // Reduce font size until the title fits within the container height, with a minimum font size of 12px
         while (el.scrollHeight > el.clientHeight && sizeStyle2 > 12) {
           sizeStyle2 -= 1;
           el.style.fontSize = `${sizeStyle2}px`;
@@ -58,7 +59,7 @@ const PosterView = forwardRef<HTMLDivElement, PosterViewProps>(
         let sizeStyleArtist2 = 26;
 
         const el = artistSizeRef2.current;
-
+        // Reduce font size until the artist name fits within the container height, with a minimum font size of 12px
         while (el.scrollHeight > el.clientHeight && sizeStyleArtist2 > 12) {
           sizeStyleArtist2 -= 1;
           el.style.fontSize = `${sizeStyleArtist2}px`;
@@ -70,7 +71,7 @@ const PosterView = forwardRef<HTMLDivElement, PosterViewProps>(
         let sizeStyle3 = 48;
 
         const el = titleSizeRef3.current;
-
+        // Reduce font size until the title fits within the container height, with a minimum font size of 24px
         while (el.scrollHeight > el.clientHeight && sizeStyle3 > 24) {
           sizeStyle3 -= 1;
           el.style.fontSize = `${sizeStyle3}px`;
@@ -88,7 +89,7 @@ const PosterView = forwardRef<HTMLDivElement, PosterViewProps>(
 
         let sizeStyle4 = 16;
         outerTracklistRef3.style.fontSize = `${sizeStyle4}px`;
-
+        // Reduce font size until the tracklist fits within the container height, with a minimum font size of 8px
         while (
           sizeStyle4 > 8 &&
           innerTracklistRef3.offsetHeight > outerTracklistRef3.clientHeight
@@ -101,6 +102,7 @@ const PosterView = forwardRef<HTMLDivElement, PosterViewProps>(
       });
     }, [tracks]);
 
+    // Utility function to determine the number of columns for the tracklist based on the number of tracks, with a maximum of 7 tracks per column
     function groupBySeven(num: number) {
       if (num <= 0) return 0;
       return Math.ceil(num / 7);
@@ -110,6 +112,7 @@ const PosterView = forwardRef<HTMLDivElement, PosterViewProps>(
     let trackFontSize = "16px";
     let columnGap = "20px";
 
+    // Adjust track font size and column gap for design 1 based on the number of rows, and for design 2 based on the total number of tracks
     if (selectedDesignIndex === 0) {
       if (numOfRows === 3) {
         trackFontSize = "14px";
