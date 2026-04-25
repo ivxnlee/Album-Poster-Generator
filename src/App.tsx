@@ -315,7 +315,25 @@ function App() {
       )}
 
       {userFlow === 1 && (
-        <img src="/sample-bg-removed.webp" alt="Sample Poster Previews" className="sample-image" />
+        <>
+          <p style={{ marginTop: 0, paddingLeft: 15, fontSize: 16, color: "white" }}>
+            psst —{" "}
+            <a
+              href="https://ivanl.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "inherit", textDecoration: "underline" }}
+            >
+              my portfolio
+            </a>{" "}
+            is pretty cool too 👀
+          </p>
+          <img
+            src="/sample-bg-removed.webp"
+            alt="Sample Poster Previews"
+            className="sample-image"
+          />
+        </>
       )}
 
       {userFlow === 2 ? (
