@@ -43,7 +43,7 @@ A sleek web app that transforms your favourite albums into stunning, print-ready
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/album-poster-generator.git
+git clone https://github.com/ivxnlee/Album-Poster-Generator.git
 
 # Navigate into the project
 cd album-poster-generator
